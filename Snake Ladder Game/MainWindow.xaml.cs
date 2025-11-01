@@ -57,7 +57,38 @@ public partial class MainWindow : Window
 
     private void OnClickEvent(object sender, MouseButtonEventArgs e)
     {
+        if (playerOneRound == false && playerTwoRound == false)
+        {
+            position = rand.Next(1, 7);
+            txtPlayer.Content = "You rolled a " + position;
+            currentPosition = 0;
 
+            if ((i + position) <= 99)
+            {
+                playerOneRound = true;
+                gameTimer.Start();
+            }
+            else
+            {
+                if (playerTwoRound == false)
+                {
+                    playerTwoRound = true;
+                    opponentPosition = rand.Next(1, 7);
+                    txtOpponent.Content = "Opponent Rolled a " + opponentPosition;
+                    opponentCurrentPosition = 0;
+                    gameTimer.Start();
+                }
+                else
+                {
+                    gameTimer.Stop();
+                    playerOneRound = false;
+                    playerTwoRound = false;
+                }
+            }
+
+
+        }
+        
     }
 
     private void SetupGame()
@@ -143,6 +174,84 @@ public partial class MainWindow : Window
         MovePiece(player, "box" + 0);
     }
 
+    private void GameTimerEvent(object sender, EventArgs e)
+    {
+
+        if (playerOneRound == true && playerTwoRound == false)
+        {
+            if (i < Moves.Count)
+            {
+
+                if (currentPosition < position)
+                {
+                    currentPosition++;
+                    i++;
+                    MovePiece(player, "box" + i);
+                }
+                else
+                {
+                    playerTwoRound = true;
+                    i = CheckSnakesOrLadders(i);
+                    MovePiece(player, "box" + i);
+
+                    opponentPosition = rand.Next(1, 7);
+                    txtOpponent.Content = "Opponent Rolled a " + opponentPosition;
+                    opponentCurrentPosition = 0;
+                    tempPos = i;
+                    txtPlayerPosition.Content = "Player is @ " + (tempPos + 1);
+                }
+            }
+
+            if (i == 99)
+            {
+                gameTimer.Stop();
+                MessageBox.Show("Game over!, You Win" + Environment.NewLine + "Click Ok to play Again");
+                RestartGame();
+            }
+        }
+
+
+        if (playerTwoRound == true)
+        {
+            if (j < Moves.Count)
+            {
+                if (opponentCurrentPosition < opponentPosition && (j + opponentPosition < 101))
+                {
+                    opponentCurrentPosition++;
+                    j++;
+                    MovePiece(opponent, "box" + j);
+                }
+                else
+                {
+                    playerOneRound = false;
+                    playerTwoRound = false;
+                    j = CheckSnakesOrLadders(j);
+                    MovePiece(opponent, "box" + j);
+                    tempPos = j;
+                    txtOpponentPosition.Content = "Opponent is @ " + (tempPos + 1);
+                    gameTimer.Stop();
+                }
+            }
+
+            if (j == 99)
+            {
+                gameTimer.Stop();
+                MessageBox.Show("Game over!, Opponent Wins" + Environment.NewLine + "Click Ok to play Again");
+                RestartGame();
+            }
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+
     private void RestartGame()
     {
         i = -1;
@@ -178,6 +287,92 @@ public partial class MainWindow : Window
 
     private int CheckSnakesOrLadders(int num)
     {
+
+        if (num == 1)
+        {
+            num = 37;
+        }
+        if (num == 6)
+        {
+            num = 13;
+        }
+        if (num == 7)
+        {
+            num = 30;
+        }
+        if (num == 14)
+        {
+            num = 25;
+        }
+        if (num == 15)
+        {
+            num = 5;
+        }
+        if (num == 20)
+        {
+            num = 41;
+        }
+        if (num == 27)
+        {
+            num = 83;
+        }
+        if (num == 35)
+        {
+            num = 43;
+        }
+        if (num == 45)
+        {
+            num = 24;
+        }
+        if (num == 48)
+        {
+            num = 10;
+        }
+        if (num == 50)
+        {
+            num = 66;
+        }
+        if (num == 61)
+        {
+            num = 18;
+        }
+        if (num == 63)
+        {
+            num = 59;
+        }
+        if (num == 70)
+        {
+            num = 90;
+        }
+        if (num == 73)
+        {
+            num = 52;
+        }
+        if (num == 77)
+        {
+            num = 97;
+        }
+        if (num == 86)
+        {
+            num = 93;
+        }
+        if (num == 88)
+        {
+            num = 67;
+        }
+        if (num == 91)
+        {
+            num = 87;
+        }
+        if (num == 94)
+        {
+            num = 74;
+        }
+        if (num == 98)
+        {
+            num = 79;
+        }
+
 
         return num;
     }
