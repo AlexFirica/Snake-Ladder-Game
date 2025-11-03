@@ -5,38 +5,44 @@
         WindowStartupLocation="CenterScreen"
         Background="#2c3e50">
     <Grid>
-        <StackPanel Margin="30" VerticalAlignment="Center">
-            <TextBlock Text="FINAL DE SEZON" 
+        <StackPanel Margin="30" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="FINAL DE SEZON" 
                        FontSize="36" FontWeight="Bold" 
                        Foreground="White" HorizontalAlignment="Center" 
                        Margin="0,0,0,30"/>
 
-            <TextBlock x:Name="txtWinner" 
+                <TextBlock x:Name="txtWinner" 
                        FontSize="24" 
                        Foreground="#3498db" 
                        HorizontalAlignment="Center" 
                        Margin="0,0,0,40"/>
-            <Border Background="#34495e" CornerRadius="10" Padding="20">
-                <StackPanel>
-                    <TextBlock Text="Statistici:" 
-                               FontSize="20" FontWeight="Bold" 
-                               Foreground="White" Margin="0,0,0,15"/>
 
-                    <TextBlock x:Name="txtScari" 
-                               FontSize="16" Foreground="White" 
-                               Margin="0,5"/>
-                    <TextBlock x:Name="txtSerpi" 
-                               FontSize="16" Foreground="White" 
-                               Margin="0,5"/>
-                    <TextBlock x:Name="txtPatratele" 
-                               FontSize="16" Foreground="White" 
-                               Margin="0,5"/>
-                    <TextBlock x:Name="txtZaruri" 
-                               FontSize="16" Foreground="White" 
-                               Margin="0,5"/>
-                </StackPanel>
-            </Border>
-            <Button Content="Play Again"
+                <Border Background="#34495e" CornerRadius="10" Padding="20">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBlock Text="Statistici:" 
+                                FontSize="20" FontWeight="Bold" 
+                                Foreground="White" Margin="0,0,0,15"/>
+
+                            <TextBlock x:Name="txtScari" FontSize="16" Foreground="White" Margin="0,5"/>
+                            <TextBlock x:Name="txtSerpi" FontSize="16" Foreground="White" Margin="0,5"/>
+                            <TextBlock x:Name="txtPatratele" FontSize="16" Foreground="White" Margin="0,5"/>
+                            <TextBlock x:Name="txtZaruri" FontSize="16" Foreground="White" Margin="0,5"/>
+                        </StackPanel>
+
+                        <MediaElement x:Name="shortVideo"
+                            Width="150" Height="120"
+                        //TODO fix absolute path
+                            Source="C:\Users\Claudiu\Desktop\Snake-Ladder-Game\res\clip.mp4"
+                            LoadedBehavior="Play"
+                            UnloadedBehavior="Stop"
+                            Margin="20,0,0,0"/>
+                    </StackPanel>
+                </Border>
+
+
+                <Button Content="Play Again"
                     Margin="20"
                     Click="PlayAgain_Click"
                     Width="150" Height="37" 
@@ -45,6 +51,7 @@
                     Foreground="White"
                     BorderThickness="0"
                     Cursor="Hand"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

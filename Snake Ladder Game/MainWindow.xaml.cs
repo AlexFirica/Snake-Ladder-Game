@@ -93,14 +93,16 @@ public partial class MainWindow : Window
 
         int a = 0;
 
-        playerImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\player.gif"));
-        opponentImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\opponent.gif"));
+        //TODO fix absolute path
+        playerImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\fc_barcelona.png"));
+        opponentImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\real_madrid.png"));
         int i = 0;
         while (i<100)
         {
             images++;
             
             ImageBrush tileImages = new ImageBrush();
+            //TODO fix absolute path
             tileImages.ImageSource = new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\" + images + ".jpg"));
             Rectangle box = new Rectangle
             {
@@ -349,8 +351,6 @@ public partial class MainWindow : Window
         {
             num = 79;
         }
-
-        //num = 99;
 
         if (startNum != num)
             nrPatratele--;
