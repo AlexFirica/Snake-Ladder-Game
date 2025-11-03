@@ -1,16 +1,11 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 using System.Windows.Threading;
-
 
 namespace Snake_Ladder_Game;
 
@@ -47,6 +42,8 @@ public partial class MainWindow : Window
 
     int tempPos;
 
+    bool resetOffset = false;
+    int nrScari = 0, nrSerpi = 0, nrPatratele = 0, nrZaruri = 0;
 
     public MainWindow()
     {
@@ -59,6 +56,7 @@ public partial class MainWindow : Window
     {
         if (playerOneRound == false && playerTwoRound == false)
         {
+            nrZaruri++;//TODO l-am pus bine?
             position = rand.Next(1, 7);
             txtPlayer.Content = "You rolled a " + position;
             currentPosition = 0;
@@ -85,10 +83,7 @@ public partial class MainWindow : Window
                     playerTwoRound = false;
                 }
             }
-
-
         }
-        
     }
 
     private void SetupGame()
@@ -98,15 +93,15 @@ public partial class MainWindow : Window
 
         int a = 0;
 
-        playerImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\alexf\\Desktop\\VS games\\C#\\Snake Ladder Game\\Snake Ladder Game\\images\\player.gif"));
-        opponentImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\alexf\\Desktop\\VS games\\C#\\Snake Ladder Game\\Snake Ladder Game\\images\\opponent.gif"));
+        playerImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\player.gif"));
+        opponentImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\opponent.gif"));
         int i = 0;
         while (i<100)
         {
             images++;
             
             ImageBrush tileImages = new ImageBrush();
-            tileImages.ImageSource = new BitmapImage(new Uri("C:\\Users\\alexf\\Desktop\\VS games\\C#\\Snake Ladder Game\\Snake Ladder Game\\images\\" + images + ".jpg"));
+            tileImages.ImageSource = new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\" + images + ".jpg"));
             Rectangle box = new Rectangle
             {
                 Height = 60,
@@ -148,7 +143,6 @@ public partial class MainWindow : Window
             MyCanvas.Children.Add(box);
 
             i++;
-
         }
 
         gameTimer.Tick += GameTimerEvent;
@@ -174,16 +168,15 @@ public partial class MainWindow : Window
         MyCanvas.Children.Add(opponent);
 
         MovePiece(player, "box" + 0);
+        MovePiece(opponent, "box" + 0);
     }
 
     private void GameTimerEvent(object sender, EventArgs e)
     {
-
         if (playerOneRound == true && playerTwoRound == false)
         {
             if (i < Moves.Count)
             {
-
                 if (currentPosition < position)
                 {
                     currentPosition++;
@@ -207,8 +200,7 @@ public partial class MainWindow : Window
             if (i == 99)
             {
                 gameTimer.Stop();
-                MessageBox.Show("Sfarsit de joc!, Ai castigat" + Environment.NewLine + "Apasa OK pentru a juca din nou!");
-                RestartGame();
+                ShowStatistics("🎉 Barcelona a câștigat ca de obicei!");
             }
         }
 
@@ -238,22 +230,10 @@ public partial class MainWindow : Window
             if (j == 99)
             {
                 gameTimer.Stop();
-                MessageBox.Show("Sfarsit de joc!, Adversarul a castigat!" + Environment.NewLine + "Apasa OK pentru a juca din nou!");
-                RestartGame();
+                ShowStatistics("😔 Real Madrid a câștigat!");
             }
         }
-
-
-
-
-
     }
-
-
-
-
-
-
     private void RestartGame()
     {
         i = -1;
@@ -262,18 +242,15 @@ public partial class MainWindow : Window
         MovePiece(player, "box" + 0);
         MovePiece(opponent, "box" + 0);
 
-
+        //TODO pls sa incepem de pe pozitia 1
         position = 0;
         currentPosition = 0;
-
 
         opponentPosition = 0;
         opponentCurrentPosition = 0;
 
-
         playerOneRound = false;
         playerTwoRound = false;
-
 
         txtPlayer.Content = "You Rolled a" + position;
         txtPlayerPosition.Content = "Player is @ 1";
@@ -282,13 +259,11 @@ public partial class MainWindow : Window
         txtOpponentPosition.Content = "Opponent is @ 1";
 
         gameTimer.Stop();
-
-
-
     }
 
     private int CheckSnakesOrLadders(int num)
     {
+        int startNum = num;
 
         if (num == 1)
         {
@@ -375,11 +350,19 @@ public partial class MainWindow : Window
             num = 79;
         }
 
+        //num = 99;
+
+        if (startNum != num)
+            nrPatratele--;
+        if (startNum > num)
+            nrSerpi++;
+        if (startNum < num)
+            nrScari++;
 
         return num;
     }
 
-    private void MovePiece(Rectangle player, string posName )
+    private void MovePiece(Rectangle player, string posName)
     {
         foreach (Rectangle rectangle in Moves)
         {
@@ -389,12 +372,61 @@ public partial class MainWindow : Window
             }
         }
 
+        //Reseteaza pozitia jucatorilor daca au fost distantati
+        if (resetOffset)
+        {
+            Canvas.SetLeft(this.player, Canvas.GetLeft(this.player) - 10);
+            Canvas.SetLeft(this.opponent, Canvas.GetLeft(this.opponent) + 10);
+
+            resetOffset = false;
+        }
 
         Canvas.SetLeft(player, Canvas.GetLeft(landingRec) + player.Width / 2);
-
         Canvas.SetTop(player, Canvas.GetTop(landingRec) + player.Height / 2);
+
+        double playerLeft = Canvas.GetLeft(this.player);
+        double playerTop = Canvas.GetTop(this.player);
+        double opponentLeft = Canvas.GetLeft(this.opponent);
+        double opponentTop = Canvas.GetTop(this.opponent);
+
+        //Distanteaza jucatorii daca sunt pe aceeasi pozitie ca sa nu fie overlap
+        if (playerLeft == opponentLeft && playerTop == opponentTop)
+        {
+            Canvas.SetLeft(this.player, playerLeft + 10);
+            Canvas.SetLeft(this.opponent, opponentLeft - 10);
+
+            resetOffset = true;
+        }
+
+        if (player.Fill is ImageBrush imageBrush)
+        {
+            string imagePath = imageBrush.ImageSource.ToString();
+
+            if (imagePath.Contains("player"))
+                nrPatratele++;
+        }
     }
 
+    private void ShowStatistics(string winner)
+    {
+        var statsWindow = new StatisticsWindow(
+            winner,
+            nrScari,
+            nrSerpi,
+            nrPatratele,
+            nrZaruri
+        );
 
+        bool? result = statsWindow.ShowDialog();
 
+        if (result == true)
+        {
+            RestartGame();
+
+            nrScari = 0;
+            nrSerpi = 0;
+            nrPatratele = 0;
+            nrZaruri = 0;
+        }
+    }
 }
