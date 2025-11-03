@@ -98,15 +98,15 @@ public partial class MainWindow : Window
 
         int a = 0;
 
-        playerImage.ImageSource =  new BitmapImage(new Uri("pack://application:,,,/images/player.gif"));
-        opponentImage.ImageSource =  new BitmapImage(new Uri("pack://application:,,,/images/opponent.gif"));
-
-        for (int i=0; i<100; i++)
+        playerImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\alexf\\Desktop\\VS games\\C#\\Snake Ladder Game\\Snake Ladder Game\\images\\player.gif"));
+        opponentImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\alexf\\Desktop\\VS games\\C#\\Snake Ladder Game\\Snake Ladder Game\\images\\opponent.gif"));
+        int i = 0;
+        while (i<100)
         {
             images++;
             
             ImageBrush tileImages = new ImageBrush();
-            tileImages.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/" + images + ".jpg"));
+            tileImages.ImageSource = new BitmapImage(new Uri("C:\\Users\\alexf\\Desktop\\VS games\\C#\\Snake Ladder Game\\Snake Ladder Game\\images\\" + images + ".jpg"));
             Rectangle box = new Rectangle
             {
                 Height = 60,
@@ -146,6 +146,8 @@ public partial class MainWindow : Window
             Canvas.SetTop(box, topPos);
 
             MyCanvas.Children.Add(box);
+
+            i++;
 
         }
 
@@ -195,17 +197,17 @@ public partial class MainWindow : Window
                     MovePiece(player, "box" + i);
 
                     opponentPosition = rand.Next(1, 7);
-                    txtOpponent.Content = "Opponent Rolled a " + opponentPosition;
+                    txtOpponent.Content = "Adversarul a dat " + opponentPosition;
                     opponentCurrentPosition = 0;
                     tempPos = i;
-                    txtPlayerPosition.Content = "Player is @ " + (tempPos + 1);
+                    txtPlayerPosition.Content = "Jucatorul este pe pozitia @ " + (tempPos + 1);
                 }
             }
 
             if (i == 99)
             {
                 gameTimer.Stop();
-                MessageBox.Show("Game over!, You Win" + Environment.NewLine + "Click Ok to play Again");
+                MessageBox.Show("Sfarsit de joc!, Ai castigat" + Environment.NewLine + "Apasa OK pentru a juca din nou!");
                 RestartGame();
             }
         }
@@ -228,7 +230,7 @@ public partial class MainWindow : Window
                     j = CheckSnakesOrLadders(j);
                     MovePiece(opponent, "box" + j);
                     tempPos = j;
-                    txtOpponentPosition.Content = "Opponent is @ " + (tempPos + 1);
+                    txtOpponentPosition.Content = "Adversarul este pe pozitia @ " + (tempPos + 1);
                     gameTimer.Stop();
                 }
             }
@@ -236,7 +238,7 @@ public partial class MainWindow : Window
             if (j == 99)
             {
                 gameTimer.Stop();
-                MessageBox.Show("Game over!, Opponent Wins" + Environment.NewLine + "Click Ok to play Again");
+                MessageBox.Show("Sfarsit de joc!, Adversarul a castigat!" + Environment.NewLine + "Apasa OK pentru a juca din nou!");
                 RestartGame();
             }
         }

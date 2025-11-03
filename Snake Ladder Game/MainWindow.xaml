@@ -9,13 +9,13 @@
         " Height="800
         " Width="800">
     <Canvas Name="MyCanvas" Focusable="True" MouseLeftButtonDown="OnClickEvent" Background="gray">
-        
+
         <Label FontSize="26" FontWeight="ExtraBold" Content="Snake Ladder Game" Foreground="White" HorizontalAlignment="Center" Canvas.Left="270" VerticalAlignment="Top" Canvas.Top="-10"/>
-        <Label FontSize="16" FontWeight="Bold" Content="Apasa oriunde in joc pentru a muta, dupa aceea AI-ul va face urmatoarea mutare" Foreground="White" HorizontalAlignment="Left" Canvas.Left="92" VerticalAlignment="Top" Canvas.Top="35"></Label>
-        
+        <Label FontSize="16" FontWeight="Bold" Content="Apasa oriunde in joc pentru a muta, dupa aceea Adversarul va face urmatoarea mutare" Foreground="White" HorizontalAlignment="Left" Canvas.Left="69" VerticalAlignment="Center" Canvas.Top="35"></Label>
+
         <Image Source="images/player.gif" Width="30" Canvas.Left="70" Canvas.Top="709"></Image>
         <Image Source="images/opponent.gif" Width="30" Canvas.Left="497" Canvas.Top="709"></Image>
-        
+
         <Label Name="txtPlayer" FontSize="16" FontWeight="Bold" Content="00" Canvas.Left="105" Canvas.Top="709"></Label>
         <Label Name="txtPlayerPosition" FontSize="16" FontWeight="Bold" Content="Jucatorul este la @ 00" Canvas.Left="105" Canvas.Top="733"></Label>
 
