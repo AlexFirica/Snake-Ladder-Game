@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -9,9 +8,6 @@ using System.Windows.Threading;
 
 namespace Snake_Ladder_Game;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     Rectangle landingRec;
@@ -51,58 +47,21 @@ public partial class MainWindow : Window
 
         SetupGame();
     }
-
-    private void OnClickEvent(object sender, MouseButtonEventArgs e)
-    {
-        if (playerOneRound == false && playerTwoRound == false)
-        {
-            nrZaruri++;//TODO l-am pus bine?
-            position = rand.Next(1, 7);
-            txtPlayer.Content = "You rolled a " + position;
-            currentPosition = 0;
-
-            if ((i + position) <= 99)
-            {
-                playerOneRound = true;
-                gameTimer.Start();
-            }
-            else
-            {
-                if (playerTwoRound == false)
-                {
-                    playerTwoRound = true;
-                    opponentPosition = rand.Next(1, 7);
-                    txtOpponent.Content = "Opponent Rolled a " + opponentPosition;
-                    opponentCurrentPosition = 0;
-                    gameTimer.Start();
-                }
-                else
-                {
-                    gameTimer.Stop();
-                    playerOneRound = false;
-                    playerTwoRound = false;
-                }
-            }
-        }
-    }
-
     private void SetupGame()
     {
         int leftPos = 10;
-        int topPos = 600;
+        int topPos = 610;
 
         int a = 0;
 
-        //TODO fix absolute path
-        playerImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\fc_barcelona.png"));
-        opponentImage.ImageSource =  new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\real_madrid.png"));
+        playerImage.ImageSource = new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\res\\fc_barcelona.png"));
+        opponentImage.ImageSource = new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\res\\real_madrid.png"));
         int i = 0;
-        while (i<100)
+        while (i < 100)
         {
             images++;
-            
+
             ImageBrush tileImages = new ImageBrush();
-            //TODO fix absolute path
             tileImages.ImageSource = new BitmapImage(new Uri("C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\" + images + ".jpg"));
             Rectangle box = new Rectangle
             {
@@ -111,11 +70,11 @@ public partial class MainWindow : Window
                 Fill = tileImages,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
-                
+
             };
             box.Name = "box" + i.ToString();
             this.RegisterName(box.Name, box);
-            
+
             Moves.Add(box);
 
             if (a == 10)
@@ -123,19 +82,20 @@ public partial class MainWindow : Window
                 topPos -= 60;
                 a = 30;
             }
-            if (a==20)
+            if (a == 20)
             {
                 topPos -= 60;
                 a = 0;
             }
-            if(a>20)
+            if (a > 20)
             {
                 a--;
                 Canvas.SetLeft(box, leftPos);
                 leftPos -= 60;
             }
-            if(a<10)
-            {   a++; 
+            if (a < 10)
+            {
+                a++;
                 Canvas.SetLeft(box, leftPos);
                 leftPos += 60;
                 Canvas.SetLeft(box, leftPos);
@@ -166,6 +126,8 @@ public partial class MainWindow : Window
             StrokeThickness = 2
         };
 
+        RenderOptions.SetBitmapScalingMode(MyCanvas, BitmapScalingMode.HighQuality);
+
         MyCanvas.Children.Add(player);
         MyCanvas.Children.Add(opponent);
 
@@ -173,9 +135,75 @@ public partial class MainWindow : Window
         MovePiece(opponent, "box" + 0);
     }
 
+    private void OnClickEvent(object sender, MouseButtonEventArgs e)
+    {
+        if (playerOneRound == false && playerTwoRound == false)
+        {
+            nrZaruri++;
+            position = rand.Next(1, 7);
+            txtPlayer.Content = "Ai dat: " + position;
+            currentPosition = 0;
+
+            if ((i + position) <= 99)
+            {
+                playerOneRound = true;
+                gameTimer.Start();
+            }
+            else
+            {
+                if (playerTwoRound == false)
+                {
+                    playerTwoRound = true;
+                    opponentPosition = rand.Next(1, 7);
+                    txtOpponent.Content = "Oponentul a dat: " + opponentPosition;
+                    opponentCurrentPosition = 0;
+                    gameTimer.Start();
+                }
+                else
+                {
+                    //TODO nu cred ca are cum sa ajunga aici
+                    gameTimer.Stop();
+                    playerOneRound = false;
+                    playerTwoRound = false;
+                }
+            }
+        }
+    }
+
     private void GameTimerEvent(object sender, EventArgs e)
     {
-        if (playerOneRound == true && playerTwoRound == false)
+        if (playerTwoRound == true)
+        {
+            if (j < Moves.Count)
+            {
+                if (opponentCurrentPosition < opponentPosition && (j + opponentPosition < 101))
+                {
+                    opponentCurrentPosition++;
+                    j++;
+                    MovePiece(opponent, "box" + j);
+                }
+                else
+                {
+                    playerOneRound = false;
+                    playerTwoRound = false;
+                    j = CheckSnakesOrLadders(j);
+                    MovePiece(opponent, "box" + j);
+                    tempPos = j;
+                    txtOpponentPosition.Content = "Adversarul este pe pozitia: " + (tempPos + 1);
+                    gameTimer.Stop();
+                }
+            }
+
+            if (j == 99)
+            {
+                gameTimer.Stop();
+                ShowStatistics("😔 Real Madrid a câștigat!");
+            }
+
+            return;
+        }
+
+        if (playerOneRound == true)
         {
             if (i < Moves.Count)
             {
@@ -195,7 +223,7 @@ public partial class MainWindow : Window
                     txtOpponent.Content = "Adversarul a dat " + opponentPosition;
                     opponentCurrentPosition = 0;
                     tempPos = i;
-                    txtPlayerPosition.Content = "Jucatorul este pe pozitia @ " + (tempPos + 1);
+                    txtPlayerPosition.Content = "Jucatorul este pe pozitia: " + (tempPos + 1);
                 }
             }
 
@@ -203,36 +231,6 @@ public partial class MainWindow : Window
             {
                 gameTimer.Stop();
                 ShowStatistics("🎉 Barcelona a câștigat ca de obicei!");
-            }
-        }
-
-
-        if (playerTwoRound == true)
-        {
-            if (j < Moves.Count)
-            {
-                if (opponentCurrentPosition < opponentPosition && (j + opponentPosition < 101))
-                {
-                    opponentCurrentPosition++;
-                    j++;
-                    MovePiece(opponent, "box" + j);
-                }
-                else
-                {
-                    playerOneRound = false;
-                    playerTwoRound = false;
-                    j = CheckSnakesOrLadders(j);
-                    MovePiece(opponent, "box" + j);
-                    tempPos = j;
-                    txtOpponentPosition.Content = "Adversarul este pe pozitia @ " + (tempPos + 1);
-                    gameTimer.Stop();
-                }
-            }
-
-            if (j == 99)
-            {
-                gameTimer.Stop();
-                ShowStatistics("😔 Real Madrid a câștigat!");
             }
         }
     }
@@ -244,7 +242,6 @@ public partial class MainWindow : Window
         MovePiece(player, "box" + 0);
         MovePiece(opponent, "box" + 0);
 
-        //TODO pls sa incepem de pe pozitia 1
         position = 0;
         currentPosition = 0;
 
@@ -254,11 +251,11 @@ public partial class MainWindow : Window
         playerOneRound = false;
         playerTwoRound = false;
 
-        txtPlayer.Content = "You Rolled a" + position;
-        txtPlayerPosition.Content = "Player is @ 1";
+        txtPlayer.Content = "Ai dat" + position;
+        txtPlayerPosition.Content = "Jucatorul nu s-a miscat inca";
 
-        txtOpponent.Content = "Opponent Rolled a " + opponentPosition;
-        txtOpponentPosition.Content = "Opponent is @ 1";
+        txtOpponent.Content = "Oponentul a dat:  " + opponentPosition;
+        txtOpponentPosition.Content = "Jucatorul nu s-a miscat inca";
 
         gameTimer.Stop();
     }
@@ -352,16 +349,17 @@ public partial class MainWindow : Window
             num = 79;
         }
 
-        if (startNum != num)
+        if (startNum == num)
             nrPatratele--;
         if (startNum > num)
             nrSerpi++;
         if (startNum < num)
             nrScari++;
 
+        num = 99;
         return num;
     }
-
+    
     private void MovePiece(Rectangle player, string posName)
     {
         foreach (Rectangle rectangle in Moves)
@@ -402,7 +400,7 @@ public partial class MainWindow : Window
         {
             string imagePath = imageBrush.ImageSource.ToString();
 
-            if (imagePath.Contains("player"))
+            if (imagePath.Contains("barcelona"))
                 nrPatratele++;
         }
     }

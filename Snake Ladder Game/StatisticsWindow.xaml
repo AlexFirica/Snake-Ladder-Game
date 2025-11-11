@@ -33,7 +33,7 @@
 
                         <MediaElement x:Name="shortVideo"
                             Width="150" Height="120"
-                        //TODO fix absolute path
+                        
                             Source="C:\Users\Claudiu\Desktop\Snake-Ladder-Game\res\clip.mp4"
                             LoadedBehavior="Play"
                             UnloadedBehavior="Stop"

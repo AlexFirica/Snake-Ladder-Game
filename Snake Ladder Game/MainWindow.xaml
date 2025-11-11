@@ -5,22 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Snake_Ladder_Game"
         mc:Ignorable="d"
-        Title="Snake Ladder Game
+        Title="Joc Șerpi și scări
         " Height="800
         " Width="800">
-    <Canvas Name="MyCanvas" Focusable="True" MouseLeftButtonDown="OnClickEvent" Background="#2c3e50">
-        <Label FontSize="26" FontWeight="ExtraBold" Content="Snake Ladder Game" Foreground="White" HorizontalAlignment="Center" Canvas.Left="270" VerticalAlignment="Top" Canvas.Top="-10"/>
-        <Label FontSize="16" FontWeight="Bold" Content="Apasa oriunde in joc pentru a muta, dupa aceea Adversarul va face urmatoarea mutare" Foreground="White" HorizontalAlignment="Left" Canvas.Left="69" VerticalAlignment="Center" Canvas.Top="35"></Label>
+    <Canvas Name="MyCanvas" Focusable="True" MouseLeftButtonDown="OnClickEvent" Background="#2c3e50" Height="784" VerticalAlignment="Bottom">
+        <Label FontSize="26" FontWeight="ExtraBold" Content="Șerpi și scări" Foreground="White" HorizontalAlignment="Center" Canvas.Left="270" VerticalAlignment="Top" Canvas.Top="10"/>
+        <Label FontSize="16" FontWeight="Bold" Content="Apasa oriunde in joc pentru a muta, dupa aceea Adversarul va face urmatoarea mutare" Foreground="White" HorizontalAlignment="Left" Canvas.Left="69" VerticalAlignment="Center" Canvas.Top="45"></Label>
 
-        //TODO fix absolute path
 
-        <Image Source="images/fc_barcelona.png" Width="30" Canvas.Left="70" Canvas.Top="709"></Image>
-        <Image Source="images/real_madrid.png" Width="30" Canvas.Left="497" Canvas.Top="709"></Image>
+        <Image Source="C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\fc_barcelona.png" Width="30" Canvas.Left="70" Canvas.Top="719"></Image>
+        <Image Source="C:\\Users\\Claudiu\\Desktop\\Snake-Ladder-Game\\Snake Ladder Game\\images\\real_madrid.png" Width="30" Canvas.Left="497" Canvas.Top="719"></Image>
 
-        <Label Name="txtPlayer" FontSize="16" FontWeight="Bold" Content="00" Canvas.Left="105" Canvas.Top="709"></Label>
-        <Label Name="txtPlayerPosition" FontSize="16" FontWeight="Bold" Content="Jucatorul este la @ 00" Canvas.Left="105" Canvas.Top="733"></Label>
+        <Label Name="txtPlayer" FontSize="16" FontWeight="Bold" Content="" Canvas.Left="105" Canvas.Top="709"></Label>
+        <Label Name="txtPlayerPosition" FontSize="16" FontWeight="Bold" Content="Jucatorul nu s-a miscat inca" Canvas.Left="105" Canvas.Top="733"></Label>
 
-        <Label Name="txtOpponent" FontSize="16" FontWeight="Bold" Content="00" Canvas.Left="533" Canvas.Top="709"></Label>
-        <Label Name="txtOpponentPosition" FontSize="16" FontWeight="Bold" Content="AI-ul este la @ 00" Canvas.Left="533" Canvas.Top="733"></Label>
+        <Label Name="txtOpponent" FontSize="16" FontWeight="Bold" Content="" Canvas.Left="533" Canvas.Top="709"></Label>
+        <Label Name="txtOpponentPosition" FontSize="16" FontWeight="Bold" Content="Oponentul nu s-a miscat inca" Canvas.Left="533" Canvas.Top="733"></Label>
     </Canvas>
 </Window>
